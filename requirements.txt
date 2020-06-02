@@ -1,1 +1,2 @@
 opencv-python-contrib>=4.2.0.34
+unidecode>=1.1.1
