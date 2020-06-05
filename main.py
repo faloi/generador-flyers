@@ -6,6 +6,7 @@ import textwrap
 import csv
 from unidecode import unidecode
 from functools import reduce, partial
+from pathlib import Path
 
 # Configuración
 font = cv2.FONT_HERSHEY_DUPLEX
@@ -26,6 +27,9 @@ class Editor:
     self.ruta_foto = ruta_foto
 
   def generar_flyer(self):
+    if not self.hay_foto():
+      return
+
     flyer = compose(
       self.generar_etiqueta,
       self.agregar_borde,
@@ -33,6 +37,9 @@ class Editor:
       self.leer_foto
     )(self.ruta_foto)
     cv2.imwrite(f"out/{self.titulo}.png", flyer)
+
+  def hay_foto(self):
+    return Path(self.ruta_foto).exists()
 
   def leer_foto(self, ruta):
     return cv2.imread(ruta, cv2.IMREAD_UNCHANGED)
