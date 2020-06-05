@@ -9,10 +9,10 @@ from functools import reduce, partial
 
 # Configuración
 font = cv2.FONT_HERSHEY_DUPLEX
-caracteres_por_linea = 50
+caracteres_por_linea = 45
 interlineado = 10
 font_base_size = 1.1
-alto = 1100
+alto = 1150
 
 def compose(*functions):
   return reduce(lambda f, g: lambda x: f(g(x)), functions, lambda x: x)
