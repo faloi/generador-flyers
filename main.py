@@ -5,7 +5,7 @@ import cv2
 import textwrap
 import csv
 from unidecode import unidecode
-from functools import reduce
+from functools import reduce, partial
 
 # Configuración
 font = cv2.FONT_HERSHEY_DUPLEX
@@ -29,12 +29,17 @@ class Editor:
     flyer = compose(
       self.generar_etiqueta,
       self.agregar_borde,
+      partial(self.redimensionar, 1080),
       self.leer_foto
     )(self.ruta_foto)
     cv2.imwrite(f"out/{self.titulo}.png", flyer)
 
   def leer_foto(self, ruta):
     return cv2.imread(ruta, cv2.IMREAD_UNCHANGED)
+
+  def redimensionar(self, ancho, imagen):
+    y, x, _ = imagen.shape
+    return cv2.resize(imagen, (ancho, int(ancho / x * y)))
   
   def agregar_borde(self, imagen):
     return cv2.copyMakeBorder(imagen, 0, alto - imagen.shape[0], 0, 0, cv2.BORDER_CONSTANT)
