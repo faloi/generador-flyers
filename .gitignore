@@ -1,3 +1,7 @@
 in/
 out/
 inventario.csv
+
+# Credenciales de Google
+credentials.json
+tocken.pickle
