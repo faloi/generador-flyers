@@ -15,8 +15,20 @@ interlineado = 10
 font_base_size = 1.1
 alto = 1150
 
+def red(skk): return "\033[91m {}\033[00m" .format(skk)
+def green(skk): return "\033[92m {}\033[00m" .format(skk)
+def yellow(skk): return "\033[93m {}\033[00m" .format(skk)
+def lightPurple(skk): return "\033[94m {}\033[00m" .format(skk)
+def purple(skk): return "\033[95m {}\033[00m" .format(skk)
+def cyan(skk): return "\033[96m {}\033[00m" .format(skk)
+def lightGray(skk): return "\033[97m {}\033[00m" .format(skk)
+def black(skk): return "\033[98m {}\033[00m" .format(skk)
+
 def compose(*functions):
   return reduce(lambda f, g: lambda x: f(g(x)), functions, lambda x: x)
+
+printError = compose(print, red)
+printInfo = print
 
 class Editor:
   def __init__(self, titulo, precio, descripcion, ruta_foto):
@@ -28,6 +40,7 @@ class Editor:
 
   def generar_flyer(self):
     if not self.hay_foto():
+      printError(f"Ojo, no hay foto para {self.titulo}")
       return
 
     flyer = compose(
@@ -79,8 +92,16 @@ class Editor:
 
 with open('inventario.csv', mode='r') as csv_file:
   csv_reader = csv.DictReader(csv_file)
-  for row in csv_reader:
-    if row['¿Vender ahora?'] == 'Sí':
-      editor = Editor(titulo=row['Nombre'], descripcion=row['Descripción'],
-                      precio=row['Valor estimado'], ruta_foto=f'in/{row["Nombre"]}.jpg')
-      editor.generar_flyer()
+  articulos = [
+    Editor(titulo=row['Nombre'], descripcion=row['Descripción'], precio=row['Valor estimado'], ruta_foto=f'in/{row["Nombre"]}.jpg')
+    for row 
+    in csv_reader 
+    if row['¿Vender ahora?'] == 'Sí'
+  ]
+  
+  printInfo(f"Hay {len(articulos)} artículos para vender. Generando flyers...")
+  
+  for editor in articulos:
+    editor.generar_flyer()
+  
+  printInfo(f"¡Fin! Se pudieron armar {len([x for x in articulos if x.hay_foto()])} flyers.")
