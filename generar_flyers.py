@@ -96,7 +96,7 @@ with open('inventario.csv', mode='r') as csv_file:
     Editor(titulo=row['Nombre'], descripcion=row['Descripción'], precio=row['Valor estimado'], ruta_foto=f'in/{row["Nombre"]}.jpg')
     for row 
     in csv_reader 
-    if row['¿Vender ahora?'] == 'Sí'
+    if row['¿Vender ahora?'] == 'Sí' and not row['Estado']
   ]
   
   printInfo(f"Hay {len(articulos)} artículos para vender. Generando flyers...")
