@@ -2,8 +2,11 @@
 
 from __future__ import print_function
 import pickle
-import os.path
 import csv
+import os
+import os.path
+from os.path import join, dirname
+from dotenv import load_dotenv
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -11,11 +14,12 @@ from google.auth.transport.requests import Request
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 
-# The ID and range of a sample spreadsheet.
-SPREADSHEET_ID = '18ns0Sd0NYLNAdRJWmw7gCHjBmIMxd-r1wTKLe2GqoL0'
-SPREADSHEET_RANGE_NAME = 'Hoja 1!A1:M'
-OUT_FILE_NAME = 'inventario.csv'
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
 
+SPREADSHEET_ID = os.getenv('SPREADSHEET_ID')
+SPREADSHEET_RANGE_NAME = os.getenv('SPREADSHEET_RANGE_NAME')
+OUT_FILE_NAME = 'inventario.csv'
 
 def login():
   creds = None
